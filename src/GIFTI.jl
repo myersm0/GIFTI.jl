@@ -12,7 +12,6 @@ include("io.jl")
 include("accessors.jl")
 
 export GiftiStruct, GiftiDataArray, GiftiFormatError
-export load, save
 
 export coordinates, triangles, medial_wall
 export shape_data, time_series, anatomical_structure

@@ -30,13 +30,6 @@ struct GiftiFormatError <: Exception
 	msg::String
 end
 
-# Helper type aliases for common array types
-const PointSet = GiftiDataArray{Float32, 2}  # 3×N or N×3 coordinates
-const TriangleSet = GiftiDataArray{Int32, 2}  # 3×M or M×3 triangles
-const ShapeData = GiftiDataArray{Float32, 1}  # N-length shape values
-const LabelData = GiftiDataArray{Int32, 1}    # N-length labels
-const TimeSeriesData = GiftiDataArray{Float32, 2}  # N×T time series
-
 # Constructor helpers
 function GiftiDataArray(data::Array{T, N}, metadata::ArrayMetadata) where {T, N}
 	# Validate that data type matches metadata
