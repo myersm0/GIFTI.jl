@@ -27,7 +27,7 @@ GiftiStruct
     [2] NIFTI_INTENT_TRIANGLE: [107792, 3] Int32
 
 
-julia> array_intents(test)
+julia> intents(test)
 2-element Vector{String}:
  "NIFTI_INTENT_POINTSET"
  "NIFTI_INTENT_TRIANGLE"
@@ -58,34 +58,6 @@ julia> triangles(test)
  13   13   14   14   15   15   16   16   17   17   18  …  59290  59291  59291  15253  59292  59292  15252  15251
   1   89   13  241   14  242   15  243   16  244   17     38964  59290  59292  59291  38964  38963  59292  38963
  89  241  241  242  242  243  243  244  244  245  245     59292  59292  15252  15252  38963  15251  15251     10
-
-julia> medial_wall(test)
-59292-element BitVector:
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 1
- 0
- 0
- 0
- 0
- ⋮
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
- 0
 
 ```
 [![Build Status](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml?query=branch%3Amain)

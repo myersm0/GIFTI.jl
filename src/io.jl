@@ -12,8 +12,8 @@ function load(filename::String)::GiftiStruct
 			)
 		)
 	
-	global_metadata = parse_global_metadata(root_elem)
-	version = pop!(global_metadata, "version", "1.0")
+	metadata = parse_global_metadata(root_elem)
+	version = pop!(metadata, "version", "1.0") # todo: ?
 	
 	array_elements = get_elements_by_tagname(root_elem, "DataArray")
 	arrays = GiftiDataArray[]
@@ -31,7 +31,6 @@ function load(filename::String)::GiftiStruct
 	end
 	
 	free(doc)
-	return test = GiftiStruct(arrays, global_metadata, version, filename)
+	return test = GiftiStruct(arrays, metadata, version, filename)
 end
-
 

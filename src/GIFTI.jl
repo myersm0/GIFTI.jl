@@ -10,6 +10,7 @@ include("types.jl")
 include("parsers.jl")
 include("io.jl")
 include("accessors.jl")
+include("show.jl")
 
 export GiftiStruct, GiftiDataArray, GiftiFormatError
 
