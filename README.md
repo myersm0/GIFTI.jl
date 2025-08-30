@@ -8,6 +8,8 @@ Just a mockup of a framework for working with GIFTI files, under development.
 - I think the arrays should not be transposed, they should reflect the data ordering on disk
 - I favor using `data` instead of `arrays` as the accessor and property name
 - `medial_wall` function is bad, needs to be totally reworked
+- need to support easier-to-read- and easier-to-type alternatives, such as `pointset` instead of "NIFTI_INTENT_POINTSET" etc
+- need constructors for GeometryBasics.Mesh
 
 
 ## Usage
