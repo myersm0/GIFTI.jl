@@ -4,8 +4,8 @@ Just a mockup of a framework for working with GIFTI files, under development.
 
 ## Usage
 ```julia
+julia> using GIFTI
 julia> filename = "./HCPpipelines/global/templates/standard_mesh_atlases/fs_L/fs_L-to-fs_LR_fsaverage.L_LR.spherical_std.164k_fs_L.surf.gii"
-
 julia> test = GIFTI.load(filename)
 GiftiStruct
   version:     1
