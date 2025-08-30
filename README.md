@@ -10,13 +10,14 @@ Just a mockup of a framework for working with GIFTI files, under development.
 - `medial_wall` function is bad, needs to be totally reworked
 - need to support easier-to-read- and easier-to-type alternatives, such as `pointset` instead of "NIFTI_INTENT_POINTSET" etc
 - need constructors for GeometryBasics.Mesh
+- add a `save` function
 
 
 ## Usage
 ```julia
 julia> using GIFTI
 julia> filename = "./HCPpipelines/global/templates/standard_mesh_atlases/colin.cerebral.L.flat.59k_fs_LR.surf.gii"
-julia> test = load(filename)
+julia> test = GIFTI.load(filename)
 GiftiStruct
   version:     1
   num arrays:  2
