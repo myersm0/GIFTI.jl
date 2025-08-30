@@ -4,11 +4,7 @@ Just a mockup of a framework for working with GIFTI files, under development.
 
 ## TODO
 - Factor out specification-related constants to a shared dependency package between this package and existing package CIFTI.jl (and maybe also NIfTI.jl)?
-- I'm not sure that we need GiftiDataArray to store the data components of a GiftiStruct; why not simly use a Matrix?
-- I think the arrays should not be transposed, they should reflect the data ordering on disk
-- I favor using `data` instead of `arrays` as the accessor and property name
-- `medial_wall` function is bad, needs to be totally reworked
-- need to support easier-to-read- and easier-to-type alternatives, such as `pointset` instead of "NIFTI_INTENT_POINTSET" etc
+- need a `medial_wall` accessor function (medial wall def is not always present)
 - need constructors for GeometryBasics.Mesh
 - add a `save` function
 
