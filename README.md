@@ -5,7 +5,7 @@ Just a mockup of a framework for working with GIFTI files, under development.
 ## Usage
 ```julia
 julia> using GIFTI
-julia> filename = "./HCPpipelines/global/templates/standard_mesh_atlases/colin.cerebral.L.flat.59k_fs_LR.surf.gii"\
+julia> filename = "./HCPpipelines/global/templates/standard_mesh_atlases/colin.cerebral.L.flat.59k_fs_LR.surf.gii"
 julia> test = load(filename)
 GiftiStruct
   version:     1
