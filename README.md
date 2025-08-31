@@ -10,50 +10,46 @@ Just a mockup of a framework for working with GIFTI files, under development.
 
 
 ## Usage
-```julia
-julia> using GIFTI
-julia> filename = "./HCPpipelines/global/templates/standard_mesh_atlases/colin.cerebral.L.flat.59k_fs_LR.surf.gii"
-julia> test = GIFTI.load(filename)
-GiftiStruct
-  version:     1
-  num arrays:  2
-  source:      colin.cerebral.L.flat.59k_fs_LR.surf.gii
-  arrays:
-    [1] NIFTI_INTENT_POINTSET: [59292, 3] Float32
-    [2] NIFTI_INTENT_TRIANGLE: [107792, 3] Int32
+Supposing you have `filename` that's the path of a gifti file, load it in as follows:
+```
+using GIFTI
+filename = "./HCPpipelines/global/templates/standard_mesh_atlases/colin.cerebral.L.flat.59k_fs_LR.surf.gii"
+g = GIFTI.load(filename)
+```
 
+The resulting GiftiStruct `g` contains primarily two things: some global metadata, and some data arrays in the form of `GiftiDataArray`s (eacho of which itself contains a `Matrix` and additional metadata).
 
-julia> intents(test)
-2-element Vector{String}:
- "NIFTI_INTENT_POINTSET"
- "NIFTI_INTENT_TRIANGLE"
+The metadata of a GiftiStruct can be accessed simply with `metadata(g)`.
 
+To query and access the data arrays in a GiftiStruct, several tools are available:
 
-julia> test["NIFTI_INTENT_POINTSET"]
-GiftiDataArray{Float32, 2}
-  intent:     NIFTI_INTENT_POINTSET
-  dimensions: (59292, 3)
-  data type:  Float32
+Get a vector the "intents" representing the arrays stored in g:
+```
+intents(g)  # returns something like ["NIFTI_INTENT_POINTSET", "NIFTI_INTENT_TRIANGLE"]
+```
 
+Get the 1st array contained in g, and get some information about it:
+```
+a = g[1]     # returns a GiftiDataArray
+intent(a)    # "NIFTI_INTENT_POINTSET" in my example case
+metadata(a)  # access various metadata key/value pairs about the array
+size(a)      # (59292, 3) in my examle case
+data(a)      # get the raw Array{T, N}
+```
 
-julia> test["NIFTI_INTENT_TRIANGLE"]
-GiftiDataArray{Int32, 2}
-  intent:     NIFTI_INTENT_TRIANGLE
-  dimensions: (107792, 3)
-  data type:  Int32
+Get a vector of all arrays `a` in `g` having `intent(a) == "NIFTI_INTENT_POINTSET"`:
+```
+g["NIFTI_INTENT_POINTSET"]   # returns a Vector{GiftiDataArray}
+g["NIFTI_INTENT_TRIANGLES"]  # returns a Vector{GiftiDataArray}
+```
 
+Or, to conveniently get a _single_ array:
+```
+pointset(g)   # returns just the pointset AKA coordinates array
+triangles(g)  # returns just the array of triangles AKA faces
+```
 
-julia> coordinates(test)
-3×59292 adjoint(::Matrix{Float32}) with eltype Float32:
- 134.377   59.6532  -5.30742  -60.2108  166.427   76.1341  …  113.921   113.104   115.412   114.538   115.918
- 169.593  123.086   44.7124   108.924    76.0323  43.3052     -28.3706  -28.0343  -26.9869  -26.7919  -25.5343
-   0.0      0.0      0.0        0.0       0.0      0.0          0.0       0.0       0.0       0.0       0.0
-
-julia> triangles(test)
-3×107792 Matrix{Int64}:
- 13   13   14   14   15   15   16   16   17   17   18  …  59290  59291  59291  15253  59292  59292  15252  15251
-  1   89   13  241   14  242   15  243   16  244   17     38964  59290  59292  59291  38964  38963  59292  38963
- 89  241  241  242  242  243  243  244  244  245  245     59292  59292  15252  15252  38963  15251  15251     10
+The latter two accessors above will fail, however, in the event that there's not exactly one matching array existing in `g`.
 
 ```
 [![Build Status](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml?query=branch%3Amain)
