@@ -35,10 +35,12 @@ function parse_coordinate_system_transform(xml_element::XMLElement)
 		data_str = content(first(matrix_data))
 		values = parse.(Float64, split(data_str))
 		length(values) == 16 || throw(GiftiFormatError("Transform matrix must have 16 elements"))
+		# todo: reconsider this transpose
 		matrix = reshape(values, 4, 4)'  # Transpose for row-major to column-major
 		push!(transforms, matrix)
 	end
 	
+	# todo: saner handling of conditions
 	# Return the first transform if only one exists
 	return length(transforms) == 1 ? transforms[1] : 
 	       length(transforms) > 1 ? transforms : nothing
