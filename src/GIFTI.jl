@@ -3,7 +3,7 @@ module GIFTI
 using LightXML
 using CodecZlib
 using Base64
-using CIFTI
+using OrderedCollections
 
 include("gifti_spec.jl")
 include("types.jl")

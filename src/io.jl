@@ -15,22 +15,17 @@ function load(filename::String)::GiftiStruct
 	metadata = parse_global_metadata(root_elem)
 	version = pop!(metadata, "version", "1.0") # todo: ?
 	
-	array_elements = get_elements_by_tagname(root_elem, "DataArray")
 	arrays = GiftiDataArray[]
-	
-	for arr_elem in array_elements
-		try
-			push!(arrays, parse_data_array(arr_elem))
-		catch e
-			if e isa GiftiFormatError
-				@warn "Failed to parse data array: $(e.msg)"
-			else
-				rethrow()
-			end
-		end
+	lookup = Dict{String, Vector{Int}}()
+	elements = get_elements_by_tagname(root_elem, "DataArray")
+	for (i, element) in enumerate(elements)
+		array = parse_data_array(element)
+		push!(arrays, array)
+		array_counter = get!(lookup, intent(array), Int[])
+		push!(array_counter, i)
 	end
 	
 	free(doc)
-	return test = GiftiStruct(arrays, metadata, version, filename)
+	return test = GiftiStruct(arrays, lookup, metadata, version, filename)
 end
 

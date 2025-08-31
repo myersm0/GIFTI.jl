@@ -3,7 +3,7 @@ struct ArrayMetadata
 	name::Union{Nothing, String}
 	data_type::DataType
 	intent::String
-	dimensions::Vector{Int}
+	dimensions::Vector{Int} # todo: why not just determine from array?
 	encoding::String
 	endian::String
 	external_file::Union{Nothing, String}
@@ -19,6 +19,7 @@ end
 
 struct GiftiStruct
 	arrays::Vector{GiftiDataArray}
+	lookup::Dict{String, Vector{Int}}
 	metadata::Dict{String, Any}
 	version::String
 	filename::Union{Nothing, String}
