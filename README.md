@@ -59,6 +59,6 @@ pointsets(g)   # returns a (possibly empty) vector of all pointset arrays in g
 triangles(g)   # returns a (possibly empty) vector of all triangle arrays in g
 ```
 
-The singular and plural syntaxes just shown may be a little confusing at first glance. But the following semantics motivating their design should help. For the singular case, when you use `pointset(g)`, you're saying, "get _the_ pointset array from `g`." Or equivalently, `triangle(g)` should be taken to mean "get _the_ triangle array from `g`". Such an array is expected to exist, and only one of them. For the plural case on the other hand, `pointsets(g)` means "get _all_ pointset arrays from `g`", and equivalently for `triangles(g)`.
+The singular and plural syntaxes just shown may be a little confusing at first glance. But the following semantics motivating their design should help. For the singular case, when you use `pointset(g)`, you're saying, "get _the_ pointset array from `g`." Or equivalently, `triangle(g)` should be taken to mean "get _the_ triangle array from `g`". Such an array is expected to exist, and only one of them; otherwise you get an error. For the plural case on the other hand, `pointsets(g)` means "get _all_ pointset arrays from `g`", and equivalently for `triangles(g)`. If it happens that none such arrays exist in `g`, you'll just get an empty vector.
 
 [![Build Status](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml?query=branch%3Amain)
