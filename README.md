@@ -49,16 +49,16 @@ g["NIFTI_INTENT_TRIANGLES"]  # returns a Vector{GiftiDataArray}
 
 Or, to conveniently get a _single_ array:
 ```
-pointset(g)   # returns just the pointset AKA coordinates array
-triangles(g)  # returns just the array of triangles AKA faces
+pointset(g)  # returns just the pointset array (AKA coordinates)
+triangle(g)  # returns just the triangle array (AKA faces)
 ```
 
-The latter two accessors above will fail, however, in the event that there's not exactly one matching array existing in `g`. To robustly handle the case of multiple matching arrays (including none), you can use the plural form, for example:
+The latter two accessors above will fail, however, in the event that there's not exactly one matching array existing in `g`. To robustly handle the case of multiple matching arrays (including none), you can use the plural forms, for example:
 ```
 pointsets(g)   # returns a (possibly empty) vector of all pointset arrays in g
+triangles(g)   # returns a (possibly empty) vector of all triangle arrays in g
 ```
 
-(Note: this pluralization of the accessor unfortunately doesn't extend to `triangles`, since that word is already plural. I've never seen a GIFTI file that has multiple triangle arrays but it's possible based on the specs.)
 
 
 [![Build Status](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml?query=branch%3Amain)
