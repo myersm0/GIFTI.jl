@@ -165,3 +165,36 @@ function is_statistical_intent(intent::String)
 	code = get(gifti_intent_codes, intent, 1000)
 	return 2 <= code <= 24  # Statistical parameter range
 end
+
+const file_extensions = Dict(
+	"generic" => ".gii",
+	"coordinate" => ".coord.gii",
+	"functional" => ".func.gii",
+	"label" => ".label.gii",
+	"rgba" => ".rgba.gii",
+	"shape" => ".shape.gii",
+	"surface" => ".surf.gii",
+	"tensor" => ".tensor.gii",
+	"time_series" => ".time.gii",
+	"topology" => ".topo.gii",
+	"vector" => ".vector.gii"
+)
+
+function file_type_from_extension(filename::String)
+	for (file_type, ext) in file_extensions
+		if endswith(filename, ext)
+			return file_type
+		end
+	end
+	return "generic"
+end
+
+function file_type_from_extension(filename::String)
+	for (file_type, ext) in file_extensions
+		if endswith(filename, ext)
+			return file_type
+		end
+	end
+	return "generic"
+end
+
