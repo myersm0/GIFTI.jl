@@ -3,19 +3,13 @@ data(g::GiftiStruct) = g.arrays
 
 arrays(g::GiftiStruct) = data(g)
 
-Base.length(g::GiftiStruct) = length(g.arrays)
+Base.length(g::GiftiStruct) = length(arrays(g))
 
-Base.getindex(g::GiftiStruct, i::Int) = g.arrays[i]
-
-function Base.filter(g::GiftiStruct, intent::String)
-	return filter(a -> intent(a) == intent, g.arrays)
-end
-
-Base.filter(f::Function, g::GiftiStruct) = return filter(f, g.arrays)
+Base.getindex(g::GiftiStruct, i::Int) = arrays(g)[i] # todo: is g.arrays[i] faster?
 
 function Base.getindex(g::GiftiStruct, intent::String)
-	indices = g.lookup[intent]
-	return g.arrays[indices]
+	indices = get(g.lookup, intent, Int[])
+	return arrays(g)[indices] # todo: is g.arrays[indices] faster?
 end
 
 function is_sparse(g::GiftiStruct)
@@ -35,18 +29,16 @@ intent(a::GiftiDataArray) = metadata(a).intent
 data(a::GiftiDataArray) = a.data
 Base.size(a::GiftiDataArray) = size(data(a))
 
-# singular accessors that assume only one matching array:
-triangles(g::GiftiStruct) = only(g["NIFTI_INTENT_TRIANGLE"])
-pointset(g::GiftiStruct) = only(g["NIFTI_INTENT_POINTSET"])
-
-# a plural accessor that always returns a vector of matching arrays:
+# plural accessors that always returns a vector of matching arrays:
 pointsets(g::GiftiStruct) = g["NIFTI_INTENT_POINTSET"]
+triangles(g::GiftiStruct) = g["NIFTI_INTENT_TRIANGLE"]
 
-time_series(g::GiftiStruct) = g["NIFTI_INTENT_TIME_SERIES"]
-timeseries(g::GiftiStruct) = time_series(g)
-anatomical_structure(g::GiftiStruct) = metadata(g, "AnatomicalStructurePrimary")
-brainstructure(g::GiftiStruct) = anatomical_structure(g)
+# singular accessors that assume only one matching array:
+pointset(g::GiftiStruct) = only(pointsets(g))
+triangle(g::GiftiStruct) = only(triangles(g))
+
 intents(g::GiftiStruct)= [arr.metadata.intent for arr in g.arrays]
+
 has_coordinates(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_POINTSET"])
 has_triangles(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_TRIANGLE"])
 has_time_series(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_TIME_SERIES"])
