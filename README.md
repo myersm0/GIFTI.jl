@@ -60,5 +60,5 @@ pointsets(g)   # returns a (possibly empty) vector of all pointset arrays in g
 
 (Note: this pluralization of the accessor unfortunately doesn't extend to `triangles`, since that word is already plural. I've never seen a GIFTI file that has multiple triangle arrays but it's possible based on the specs.)
 
-```
+
 [![Build Status](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml?query=branch%3Amain)
