@@ -17,7 +17,9 @@ filename = "./HCPpipelines/global/templates/standard_mesh_atlases/colin.cerebral
 g = GIFTI.load(filename)
 ```
 
-The resulting GiftiStruct `g` contains primarily two things: some global metadata, and some data arrays in the form of `GiftiDataArray`s (eacho of which itself contains a `Matrix` and additional metadata).
+The resulting GiftiStruct `g` contains primarily two things:
+- global metadata
+- arrays in the form of `GiftiDataArray`s (each of which itself contains a `Matrix` and additional metadata).
 
 The metadata of a GiftiStruct can be accessed simply with `metadata(g)`.
 
@@ -40,6 +42,8 @@ data(a)      # get the raw Array{T, N}
 Get a vector of all arrays `a` in `g` having `intent(a) == "NIFTI_INTENT_POINTSET"`:
 ```
 g["NIFTI_INTENT_POINTSET"]   # returns a Vector{GiftiDataArray}
+
+# similarly for NIFTI_INTENT_TRIANGLES:
 g["NIFTI_INTENT_TRIANGLES"]  # returns a Vector{GiftiDataArray}
 ```
 
@@ -49,7 +53,12 @@ pointset(g)   # returns just the pointset AKA coordinates array
 triangles(g)  # returns just the array of triangles AKA faces
 ```
 
-The latter two accessors above will fail, however, in the event that there's not exactly one matching array existing in `g`.
+The latter two accessors above will fail, however, in the event that there's not exactly one matching array existing in `g`. To robustly handle the case of multiple matching arrays (including none), you can use the plural form, for example:
+```
+pointsets(g)   # returns a (possibly empty) vector of all pointset arrays in g
+```
+
+(Note: this pluralization of the accessor unfortunately doesn't extend to `triangles`, since that word is already plural. I've never seen a GIFTI file that has multiple triangle arrays but it's possible based on the specs.)
 
 ```
 [![Build Status](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/myersm0/GIFTI.jl/actions/workflows/CI.yml?query=branch%3Amain)
