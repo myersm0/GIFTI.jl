@@ -6,6 +6,7 @@ Just a mockup of a framework for working with GIFTI files, under development.
 - Factor out specification-related constants to a shared dependency package between this package and existing package CIFTI.jl (and maybe also NIfTI.jl)?
 - add a `save` function
 - should be able to index into a GiftiDataArray with square brackets
+- `data()` & `array()` access patterns need some rethinking
 
 
 ## Usage
