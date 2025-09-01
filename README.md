@@ -11,7 +11,6 @@ Just a mockup of a framework for working with GIFTI files, under development.
 Supposing you have `filename` that's the path of a gifti file, load it in as follows:
 ```
 using GIFTI
-filename = "./HCPpipelines/global/templates/standard_mesh_atlases/colin.cerebral.L.flat.59k_fs_LR.surf.gii"
 g = GIFTI.load(filename)
 ```
 
