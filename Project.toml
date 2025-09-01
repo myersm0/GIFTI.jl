@@ -11,6 +11,7 @@ LightXML = "9c8b4983-aa76-5018-a973-4c85ecc9e179"
 
 [compat]
 CodecZlib = "0.7"
+GeometryBasics = "0.4, 0.5"
 LightXML = "0.9"
 julia = "1.6.7"
 
