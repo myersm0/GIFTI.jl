@@ -28,6 +28,12 @@ Get a vector the "intents" representing the arrays stored in g:
 intents(g)  # returns something like ["NIFTI_INTENT_POINTSET", "NIFTI_INTENT_TRIANGLE"]
 ```
 
+The data arrays can be returned as a vector of `GiftiDataArray`:
+```
+arrays(g)
+data(g)    # equivalently
+```
+
 Square bracket indexing is available for accessing the arrays by number. For example, to get the first array contained in g:
 ```
 a = g[1]     # returns a GiftiDataArray
