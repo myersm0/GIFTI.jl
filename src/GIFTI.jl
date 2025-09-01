@@ -3,7 +3,7 @@ module GIFTI
 using LightXML
 using CodecZlib: transcode, GzipDecompressor
 using Base64
-import GeometryBasics.Mesh
+using GeometryBasics
 
 include("gifti_spec.jl")
 include("types.jl")
