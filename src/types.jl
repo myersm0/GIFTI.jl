@@ -18,7 +18,7 @@ struct GiftiDataArray{T, N}
 end
 
 struct GiftiStruct
-	arrays::Vector{GiftiDataArray}
+	data::Vector{GiftiDataArray}
 	lookup::Dict{String, Vector{Int}}
 	metadata::Dict{String, Any}
 	version::String

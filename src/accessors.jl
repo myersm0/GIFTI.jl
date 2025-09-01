@@ -1,15 +1,14 @@
 
-data(g::GiftiStruct) = g.arrays
+data(g::GiftiStruct) = g.data
+data(d::GiftiDataArray) = d.data
 
-arrays(g::GiftiStruct) = data(g)
+Base.length(g::GiftiStruct) = length(data(g))
 
-Base.length(g::GiftiStruct) = length(arrays(g))
-
-Base.getindex(g::GiftiStruct, i::Int) = arrays(g)[i] # todo: is g.arrays[i] faster?
+Base.getindex(g::GiftiStruct, i::Int) = data(g)[i] # todo: is g.data[i] faster?
 
 function Base.getindex(g::GiftiStruct, intent::String)
 	indices = get(g.lookup, intent, Int[])
-	return arrays(g)[indices] # todo: is g.arrays[indices] faster?
+	return data(g)[indices] # todo: is g.data[indices] faster?
 end
 
 function is_sparse(g::GiftiStruct)
@@ -26,8 +25,6 @@ end
 metadata(g::GiftiStruct) = g.metadata
 metadata(a::GiftiDataArray) = a.metadata
 intent(a::GiftiDataArray) = metadata(a).intent
-data(a::GiftiDataArray) = a.data
-array(a::GiftiDataArray) = data(a)
 Base.size(a::GiftiDataArray) = size(data(a))
 
 # plural accessors that always returns a vector of matching arrays:
@@ -38,7 +35,7 @@ triangles(g::GiftiStruct) = g["NIFTI_INTENT_TRIANGLE"]
 pointset(g::GiftiStruct) = only(pointsets(g))
 triangle(g::GiftiStruct) = only(triangles(g))
 
-intents(g::GiftiStruct)= [arr.metadata.intent for arr in g.arrays]
+intents(g::GiftiStruct)= [arr.metadata.intent for arr in data(g)]
 
 has_pointset(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_POINTSET"])
 has_triangle(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_TRIANGLE"])

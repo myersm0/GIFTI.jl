@@ -2,13 +2,13 @@
 function Base.show(io::IO, ::MIME"text/plain", g::GiftiStruct)
 	println(io, "GiftiStruct")
 	println(io, "  version:     ", g.version)
-	println(io, "  num arrays:  ", length(g.arrays))
+	println(io, "  num arrays:  ", length(g))
 	if !isnothing(g.filename)
 		println(io, "  source:      ", basename(g.filename))
 	end
-	if length(g.arrays) > 0
+	if length(g) > 0
 		println(io, "  arrays:")
-		for (i, arr) in enumerate(g.arrays)
+		for (i, arr) in enumerate(g.data)
 			intent = arr.metadata.intent
 			dims = arr.metadata.dimensions
 			dtype = arr.metadata.data_type
