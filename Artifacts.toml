@@ -1,0 +1,13 @@
+[msc_gifti_data_164k]
+git-tree-sha1 = "c1df672ce414ccd4048bb6b6f28d5ebef57ba87e"
+
+    [[msc_gifti_data_164k.download]]
+    sha256 = "53d3cc966f3f166c5d930ce387891553cfcf5b04dc3beccf27d7828d2423f8b6"
+    url = "https://gist.github.com/myersm0/5b97837021d054e8b2ebe871578f4ede/raw/c1df672ce414ccd4048bb6b6f28d5ebef57ba87e.tar.gz"
+
+[msc_gifti_data_32k]
+git-tree-sha1 = "763e7496660c4f4342ab49676f58c75b52c5c464"
+
+    [[msc_gifti_data_32k.download]]
+    sha256 = "6f884c1913824b3d646cbd0bbcca9403aff2e8b7ff4ed8642cd9881a0d3bfd97"
+    url = "https://gist.github.com/myersm0/78d94c5575a875e3c476c2d608ef21a0/raw/763e7496660c4f4342ab49676f58c75b52c5c464.tar.gz"
