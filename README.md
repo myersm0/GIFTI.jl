@@ -6,7 +6,6 @@ Just a mockup of a framework for working with GIFTI files, under development.
 - Factor out specification-related constants to a shared dependency package between this package and existing package CIFTI.jl (and maybe also NIfTI.jl)?
 - add a `save` function
 - should be able to index into a GiftiDataArray with square brackets
-- `data()` & `array()` access patterns need some rethinking
 
 
 ## Usage
@@ -20,19 +19,17 @@ The resulting GiftiStruct `g` contains primarily two things:
 - metadata
 - some number of `GiftiDataArray`s (each of which itself contains an `Array` and additional metadata)
 
-The metadata of a GiftiStruct can be accessed simply with `metadata(g)`.
+To access these components:
+```
+metadata(g)  # returns a Dict of key, value pairs
+data(g)      # returns a Vector of `GiftiArrayData`
+```
 
 To query and access the data arrays in a GiftiStruct, several tools are available:
 
 Get a vector the "intents" representing the arrays stored in g:
 ```
 intents(g)  # returns something like ["NIFTI_INTENT_POINTSET", "NIFTI_INTENT_TRIANGLE"]
-```
-
-The data arrays can be returned as a vector of `GiftiDataArray`:
-```
-arrays(g)
-data(g)    # equivalently
 ```
 
 Square bracket indexing is available for accessing the arrays by number. For example, to get the first array contained in g:
