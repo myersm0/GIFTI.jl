@@ -22,7 +22,7 @@ The resulting GiftiStruct `g` contains primarily two things:
 To access these components:
 ```
 metadata(g)  # returns a Dict of key, value pairs
-data(g)      # returns a Vector of `GiftiArrayData`
+data(g)      # returns a Vector of `GiftiDataArray`s
 ```
 
 To query and access the data arrays in a GiftiStruct, several tools are available:
