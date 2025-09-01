@@ -27,6 +27,7 @@ metadata(g::GiftiStruct) = g.metadata
 metadata(a::GiftiDataArray) = a.metadata
 intent(a::GiftiDataArray) = metadata(a).intent
 data(a::GiftiDataArray) = a.data
+array(a::GiftiDataArray) = data(a)
 Base.size(a::GiftiDataArray) = size(data(a))
 
 # plural accessors that always returns a vector of matching arrays:
