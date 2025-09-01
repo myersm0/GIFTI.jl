@@ -15,6 +15,19 @@ end
 struct GiftiDataArray{T, N}
 	data::Array{T, N}
 	metadata::ArrayMetadata
+	function GiftiDataArray(data::Array{T, N}, metadata::ArrayMetadata) where {T, N}
+		T == metadata.data_type || throw(
+			GiftiFormatError(
+				"array is $(T) but metadata specifies $(metadata.data_type)"
+			)
+		)
+		size(data) == Tuple(metadata.dimensions) || throw(
+			GiftiFormatError(
+				"array is $(size(data)) but metadata specifies $(Tuple(metadata.dimensions))"
+			)
+		)
+		return new{T, N}(data, metadata)
+	end
 end
 
 struct GiftiStruct
@@ -27,19 +40,5 @@ end
 
 struct GiftiFormatError <: Exception
 	msg::String
-end
-
-function GiftiDataArray(data::Array{T, N}, metadata::ArrayMetadata) where {T, N}
-	T == metadata.data_type || throw(
-		GiftiFormatError(
-			"array is $(T) but metadata specifies $(metadata.data_type)"
-		)
-	)
-	size(data) == Tuple(metadata.dimensions) || throw(
-		GiftiFormatError(
-			"array is $(size(data)) but metadata specifies $(Tuple(metadata.dimensions))"
-		)
-	)
-	return GiftiDataArray{T, N}(data, metadata)
 end
 
