@@ -40,9 +40,9 @@ triangle(g::GiftiStruct) = only(triangles(g))
 
 intents(g::GiftiStruct)= [arr.metadata.intent for arr in g.arrays]
 
-has_pointest(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_POINTSET"])
+has_pointset(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_POINTSET"])
 has_triangle(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_TRIANGLE"])
-has_pointests(g::GiftiStruct) = has_pointest(g)
+has_pointsets(g::GiftiStruct) = has_pointest(g)
 has_triangles(g::GiftiStruct) = has_triangle(g)
 has_time_series(g::GiftiStruct) = !isnothing(g["NIFTI_INTENT_TIME_SERIES"])
 has_timeseries(g::GiftiStruct) = has_timeseries(g)
