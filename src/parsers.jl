@@ -122,6 +122,7 @@ function parse_array_data(xml_element::XMLElement, metadata::ArrayMetadata)
 		array = reshape(values, tuple(reverse(metadata.dimensions)...))
 		# Permute dimensions
 		n_dims = length(metadata.dimensions)
+		# todo: make this more general
 		if n_dims == 2
 			array = permutedims(array, (2, 1))
 		elseif n_dims == 3
