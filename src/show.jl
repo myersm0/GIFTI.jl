@@ -43,7 +43,9 @@ function Base.show(io::IO, ::MIME"text/plain", m::ArrayMetadata)
 		end
 	end
 	
-	println(io, "  transform:   ", size(m.coordinate_system_transform), " matrix")
+	if !isnothing(m.coordinate_system_transform)
+		println(io, "  transform:   ", size(m.coordinate_system_transform), " matrix")
+	end
 	
 	if !isempty(m.metadata)
 		println(io, "  metadata:    ", length(m.metadata), " entries")
