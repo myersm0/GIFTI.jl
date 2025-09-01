@@ -35,6 +35,7 @@ intent(a)    # "NIFTI_INTENT_POINTSET" in my example case
 metadata(a)  # access various metadata key/value pairs about the array
 size(a)      # (59292, 3) in my example case
 data(a)      # get the raw Array{T, N}
+arrays(a)    # equivalent to `data(a)` above
 ```
 
 Get a vector of all arrays `a` in `g` having `intent(a) == "NIFTI_INTENT_POINTSET"`:
