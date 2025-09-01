@@ -180,21 +180,3 @@ const file_extensions = Dict(
 	"vector" => ".vector.gii"
 )
 
-function file_type_from_extension(filename::String)
-	for (file_type, ext) in file_extensions
-		if endswith(filename, ext)
-			return file_type
-		end
-	end
-	return "generic"
-end
-
-function file_type_from_extension(filename::String)
-	for (file_type, ext) in file_extensions
-		if endswith(filename, ext)
-			return file_type
-		end
-	end
-	return "generic"
-end
-
