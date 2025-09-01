@@ -4,8 +4,6 @@ Just a mockup of a framework for working with GIFTI files, under development.
 
 ## TODO
 - Factor out specification-related constants to a shared dependency package between this package and existing package CIFTI.jl (and maybe also NIfTI.jl)?
-- need a `medial_wall` accessor function (medial wall def is not always present)
-- need constructors for GeometryBasics.Mesh
 - add a `save` function
 
 
