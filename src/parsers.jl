@@ -42,8 +42,10 @@ function parse_coordinate_system_transform(xml_element::XMLElement)
 	
 	# todo: saner handling of conditions
 	# Return the first transform if only one exists
-	return length(transforms) == 1 ? transforms[1] : 
-	       length(transforms) > 1 ? transforms : nothing
+	if length(transforms) > 1
+		@warn "Multiple coordinate transforms found, using only the first"
+	end
+	return isempty(transforms) ? nothing : transforms[1]
 end
 
 function parse_metadata_dict(xml_element::XMLElement)
