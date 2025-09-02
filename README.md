@@ -2,19 +2,13 @@
 
 A Julia package for reading gifti (.gii) neuroimaging surface files.
 
-A gifti file is a collection of one or more data arrays, each tagged with an "intent" that describes what kind of data it contains - vertex coordinates (NIFTI_INTENT_POINTSET), triangle faces (NIFTI_INTENT_TRIANGLE), morphometric measurements, functional data, color labels, and so on. The format supports metadata at multiple levels: global metadata attached to the gifti file itself; and array-specific metadata for each data array, including some common elements (indexing order, coordinate transformations, etc) and additional optional metadata in the form of arbitrary key-value pairs. The full specification is available [here](https://www.nitrc.org/projects/gifti/).
+A gifti file is a collection of one or more data arrays, each tagged with an "intent" that describes what kind of data it contains - vertex coordinates (NIFTI_INTENT_POINTSET), triangle faces (NIFTI_INTENT_TRIANGLE), morphometrics, functional data, color labels, and so on. There is also metadata at multiple levels: global metadata attached to the gifti file itself; and array-specific metadata for each data array, including some common elements (indexing order, coordinate transformations, etc) and additional optional metadata in the form of arbitrary key-value pairs. The full specification is available [here](https://www.nitrc.org/projects/gifti/).
 
 ## Installation
 ```
 using Pkg
 Pkg.add("GIFTI")
 ```
- 
-## TODO
-- Factor out specification-related constants to a shared dependency package between this package and existing package CIFTI.jl (and maybe also NIfTI.jl)?
-- add a `save` function
-- should be able to index into a GiftiDataArray with square brackets
-
 
 ## Usage
 If `filename` is the path of a gifti file, load it in as follows:
