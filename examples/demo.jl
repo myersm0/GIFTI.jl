@@ -35,8 +35,12 @@ my_data[1:5, 1]
 metadata(my_array)
 
 # there is even an additional level of optional metadata
-# in the form of arbitrary key-value pairs:
-metadata(metadata(my_array))
+# in the form of arbitrary key-value pairs; for example,
+# we may be able to extract the anatomical label and 
+# the type of geometric space (e.g. "Inflated", "Spherical"):
+optional_kv_pairs = metadata(metadata(my_array))
+optional_kv_pairs["AnatomicalStructurePrimary"]  # "CortexLeft"
+optional_kv_pairs["GeometricType"]               # "Inflated"
 
 # if your gifti file has a pointset array and a triangle array,
 # ("NIFTI_INTENT_POINTSET" and "NIFTI_INTENT_TRIANGLE"),
