@@ -20,8 +20,10 @@ Base.iterate(g::GiftiStruct) = iterate(data(g))
 Base.iterate(g::GiftiStruct, state) = iterate(data(g), state)
 Base.eltype(::Type{GiftiStruct}) = GiftiDataArray
 Base.lastindex(g::GiftiStruct) = length(g)
-Base.axes(a::GiftiDataArray, args...) = axes(data(a), args...)
 
+Base.iterate(a::GiftiDataArray, args...) = iterate(data(a), args...)
+Base.length(a::GiftiDataArray) = length(data(a))
+Base.axes(a::GiftiDataArray, args...) = axes(data(a), args...)
 Base.lastindex(a::GiftiDataArray) = lastindex(data(a))
 Base.axes(a::GiftiDataArray) = axes(data(a))
 
