@@ -1,4 +1,11 @@
 
+"""
+    load(filename::String)
+
+Load a GIFTI file from disk.
+
+Returns a GiftiStruct containing its data arrays and metadata.
+"""
 function load(filename::AbstractString)
 	isfile(filename) || throw(ArgumentError("File does not exist: $filename"))
 	
