@@ -12,6 +12,11 @@ Base.getindex(g::GiftiStruct, intent::String) = data(g)[get(g.lookup, intent, In
 
 Base.size(a::GiftiDataArray) = size(data(a))
 
+Base.iterate(g::GiftiStruct) = iterate(g.data)
+Base.iterate(g::GiftiStruct, state) = iterate(g.data, state)
+Base.eltype(::Type{GiftiStruct}) = GiftiDataArray
+Base.lastindex(g::GiftiStruct) = length(g)
+
 intent(a::GiftiDataArray) = metadata(a).intent
 intents(g::GiftiStruct)= [intent(a) for a in data(g)]
 
