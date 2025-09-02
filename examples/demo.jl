@@ -5,24 +5,30 @@ using Colors
 
 # demo files from the MSC dataset
 data_dir = artifact"msc_gifti_data_32k"
-filelist = readdir(data_dir)
 filename = joinpath(data_dir, "MSC01.L.inflated.32k_fs_LR.surf.gii")
 g = GIFTI.load(filename)
 
 # global metadata about the file itself:
 metadata(g)
 
-# get the intent codes for each array in `g`
-# that describe what it represents:
+# for each array in g, get the intent code that describes what it represents:
 intents(g)
 
-# get all the datay arrays it contains,
-# in the form of a Vector{GiftiDataArray}:
+# get all the data arrays from g, in the form of a Vector{GiftiDataArray}:
 data(g)
 
 # alternatively, get only the first array:
 my_array = g[1]
 intent(my_array)  # "NIFTI_INTENT_POINTSET"
+
+# ... or the last:
+my_array = g[end]
+intent(my_array)  # "NIFTI_INTENT_TRIANGLE"
+
+# you can also get GiftiDataArrays by name or by regex;
+# note that these each return a (possibly empty) vector of results:
+possibly_many_arrays = data(g, "NIFTI_INTENT_POINTSET")
+possibly_even_more_arrays = data(g, r"nifti_intent_"i)
 
 # index into the GiftiDataArray, like you would do with a regular Array:
 my_array[1:5, 1]
@@ -43,7 +49,6 @@ optional_kv_pairs["AnatomicalStructurePrimary"]  # "CortexLeft"
 optional_kv_pairs["GeometricType"]               # "Inflated"
 
 # if your gifti file has a pointset array and a triangle array,
-# ("NIFTI_INTENT_POINTSET" and "NIFTI_INTENT_TRIANGLE"),
 # you can construct a GeometryBasics.Mesh from that:
 if has_pointset(g) && has_triangle(g)
 	mesh = GeometryBasics.Mesh(g)
