@@ -27,6 +27,10 @@ filelist = readdir(data_dir)
 			@test intent(a) == intents(g)[i]
 		end
 
+		for p in pointsets(g)
+			@test length(transforms(p)) > 0
+		end
+
 		if has_pointset(g)
 			a = pointset(g)
 			@test intent(a) == "NIFTI_INTENT_POINTSET"

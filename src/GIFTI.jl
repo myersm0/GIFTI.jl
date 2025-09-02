@@ -16,7 +16,7 @@ include("io.jl")
 
 include("accessors.jl")
 export array, arrays, data, metadata, intent, intents
-export pointset, pointsets, triangle, triangles
+export pointset, pointsets, triangle, triangles, transforms
 export has_pointset, has_triangle, has_time_series, has_timeseries
 
 include("conversion.jl")
