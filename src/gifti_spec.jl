@@ -44,10 +44,8 @@ const gifti_intent_codes = Dict(
 	"NIFTI_INTENT_SHAPE" => 2005
 )
 
-# Reverse lookup for intent codes
 const intent_code_to_string = Dict(v => k for (k, v) in gifti_intent_codes)
 
-# Common anatomical structure types (similar to CIFTI BrainStructure)
 const anatomical_structure_primary = Dict(
 	"CortexLeft" => "CORTEX_LEFT",
 	"CortexRight" => "CORTEX_RIGHT",
@@ -60,21 +58,18 @@ const anatomical_structure_primary = Dict(
 	"HippocampusRight" => "HIPPOCAMPUS_RIGHT"
 )
 
-# Anatomical structure secondary types
 const anatomical_structure_secondary = Dict(
 	"GrayWhite" => "The white/gray boundary",
 	"Pial" => "The pial (gray/CSF) boundary",
 	"MidThickness" => "Middle layer of cortex (layer 4)"
 )
 
-# Topological types
 const topological_types = Dict(
 	"Closed" => "A closed surface",
 	"Open" => "Typically medial wall removed",
 	"Cut" => "Cuts have been made for flattening"
 )
 
-# NIFTI data type codes
 const nifti_type_codes = Dict(
 	"NIFTI_TYPE_UINT8" => 2,
 	"NIFTI_TYPE_INT16" => 4,
@@ -90,7 +85,6 @@ const nifti_type_codes = Dict(
 	"NIFTI_TYPE_UINT64" => 1280
 )
 
-# Map NIFTI type strings to Julia types
 const nifti_to_julia_type = Dict(
 	"NIFTI_TYPE_UINT8" => UInt8,
 	"NIFTI_TYPE_INT8" => Int8,
@@ -104,7 +98,6 @@ const nifti_to_julia_type = Dict(
 	"NIFTI_TYPE_FLOAT64" => Float64
 )
 
-# Encoding types
 const encoding_types = [
 	"ASCII",
 	"Base64Binary",
@@ -112,13 +105,10 @@ const encoding_types = [
 	"ExternalFileBinary"
 ]
 
-# Endian types
 const endian_types = ["BigEndian", "LittleEndian"]
 
-# Array indexing order
 const indexing_order = ["RowMajorOrder", "ColumnMajorOrder"]
 
-# Coordinate system names
 const coordinate_systems = [
 	"Talairach",
 	"MNI",
@@ -130,10 +120,25 @@ const coordinate_systems = [
 	"NIFTI_XFORM_MNI_152"
 ]
 
-# Geometric types
 const geometric_types = ["Anatomical", "Inflated", "Flat", "Hull", "Pial", "White"]
 
-# Functions to categorize intent
+const file_extensions = Dict(
+	"generic" => ".gii",
+	"coordinate" => ".coord.gii",
+	"functional" => ".func.gii",
+	"label" => ".label.gii",
+	"rgba" => ".rgba.gii",
+	"shape" => ".shape.gii",
+	"surface" => ".surf.gii",
+	"tensor" => ".tensor.gii",
+	"time_series" => ".time.gii",
+	"topology" => ".topo.gii",
+	"vector" => ".vector.gii"
+)
+
+
+## Functions to categorize intent
+
 function is_spatial_intent(intent::String)
 	return intent in [
 		"NIFTI_INTENT_POINTSET",
@@ -165,18 +170,4 @@ function is_statistical_intent(intent::String)
 	code = get(gifti_intent_codes, intent, 1000)
 	return 2 <= code <= 24  # Statistical parameter range
 end
-
-const file_extensions = Dict(
-	"generic" => ".gii",
-	"coordinate" => ".coord.gii",
-	"functional" => ".func.gii",
-	"label" => ".label.gii",
-	"rgba" => ".rgba.gii",
-	"shape" => ".shape.gii",
-	"surface" => ".surf.gii",
-	"tensor" => ".tensor.gii",
-	"time_series" => ".time.gii",
-	"topology" => ".topo.gii",
-	"vector" => ".vector.gii"
-)
 
