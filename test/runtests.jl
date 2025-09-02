@@ -19,6 +19,8 @@ filelist = readdir(data_dir)
 
 		for (i, a) in enumerate(g)
 			@test a == g[i]
+			@test a[1:end] isa Vector
+			@test a[1:5, 1] == data(a)[1:5, 1]
 			@test metadata(a) isa GIFTI.ArrayMetadata
 			@test data(a) isa AbstractArray
 			@test size(a) == size(data(a)) == Tuple(metadata(a).dimensions)
