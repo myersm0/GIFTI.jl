@@ -1,5 +1,5 @@
 
-function load(filename::String)::GiftiStruct
+function load(filename::AbstractString)
 	isfile(filename) || throw(ArgumentError("File does not exist: $filename"))
 	
 	doc = parse_file(filename)

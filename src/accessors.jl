@@ -4,13 +4,13 @@ metadata(a::GiftiDataArray) = a.metadata
 metadata(m::ArrayMetadata) = m.metadata
 
 data(g::GiftiStruct) = g.data
-data(g::GiftiStruct, intent::String) = data(g)[get(g.intent_lookup, intent, Int[])]
+data(g::GiftiStruct, intent::AbstractString) = data(g)[get(g.intent_lookup, intent, Int[])]
 data(g::GiftiStruct, regex::Regex) = filter(d -> occursin(regex, intent(d)), data(g))
 
 data(d::GiftiDataArray) = d.data
 
 Base.length(g::GiftiStruct) = length(data(g))
-Base.getindex(g::GiftiStruct, i::Int) = data(g)[i]
+Base.getindex(g::GiftiStruct, i::Integer) = data(g)[i]
 
 Base.size(a::GiftiDataArray) = size(data(a))
 
