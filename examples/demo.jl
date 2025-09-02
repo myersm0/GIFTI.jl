@@ -52,6 +52,8 @@ optional_kv_pairs["GeometricType"]               # "Inflated"
 # you can construct a GeometryBasics.Mesh from that:
 if has_pointset(g) && has_triangle(g)
 	mesh = GeometryBasics.Mesh(g)
+	coords = coordiates(mesh)
+	triangle_faces = faces(mesh)
 end
 
 # some gifti files may have label data describing colors for display:
