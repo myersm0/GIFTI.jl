@@ -43,10 +43,13 @@ data(a)      # get the raw Array{T, N}
 
 Get a vector of all arrays `a` in `g` having `intent(a) == "NIFTI_INTENT_POINTSET"`:
 ```
-g["NIFTI_INTENT_POINTSET"]   # returns a Vector{GiftiDataArray}
+data(g, "NIFTI_INTENT_POINTSET")   # returns a Vector{GiftiDataArray}
 
 # similarly for NIFTI_INTENT_TRIANGLES:
-g["NIFTI_INTENT_TRIANGLES"]  # returns a Vector{GiftiDataArray}
+data(g, "NIFTI_INTENT_TRIANGLES")  # returns a Vector{GiftiDataArray}
+
+# a regex also works (may match multiple intents):
+data(g, r"nifti_intent_"i)
 ```
 
 Or, to conveniently get a _single_ array:
