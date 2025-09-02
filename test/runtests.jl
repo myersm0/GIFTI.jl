@@ -13,9 +13,11 @@ filelist = readdir(data_dir)
 		@test g isa GiftiStruct
 		@test metadata(g) isa Dict
 		@test data(g) isa Vector{GiftiDataArray}
+		@test first(g) == g[1]
+		@test last(g) == g[end]
 
-		for i in 1:length(g)
-			a = g[i]
+		for (i, a) in enumerate(g)
+			@test a == g[i]
 			@test metadata(a) isa GIFTI.ArrayMetadata
 			@test data(a) isa AbstractArray
 			@test size(a) == size(data(a)) == Tuple(metadata(a).dimensions)
