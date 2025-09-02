@@ -1,7 +1,13 @@
 # GIFTI
 
-Just a mockup of a framework for working with GIFTI files, under development.
+A Julia package for reading gifti (.gii) neuroimaging surface files.
 
+A gifti file is a collection of one or more data arrays, each tagged with an "intent" that describes what kind of data it contains - vertex coordinates (NIFTI_INTENT_POINTSET), triangle faces (NIFTI_INTENT_TRIANGLE), morphometric measurements, functional data, color labels, and so on. The format supports metadata at multiple levels: global metadata attached to the gifti file itself; and array-specific metadata for each data array, including some common elements (indexing order, coordinate transformations, etc) and additional optional metadata in the form of arbitrary key-value pairs. The full specification is available [here](https://www.nitrc.org/projects/gifti/).
+
+## Installation
+using Pkg
+Pkg.add("GIFTI")
+  
 ## TODO
 - Factor out specification-related constants to a shared dependency package between this package and existing package CIFTI.jl (and maybe also NIfTI.jl)?
 - add a `save` function
@@ -9,7 +15,7 @@ Just a mockup of a framework for working with GIFTI files, under development.
 
 
 ## Usage
-Supposing you have `filename` that's the path of a gifti file, load it in as follows:
+If `filename` is the path of a gifti file, load it in as follows:
 ```
 using GIFTI
 g = GIFTI.load(filename)
@@ -34,11 +40,12 @@ intents(g)  # returns something like ["NIFTI_INTENT_POINTSET", "NIFTI_INTENT_TRI
 
 Square bracket indexing is available for accessing the arrays by number. For example, to get the first array contained in g:
 ```
-a = g[1]     # returns a GiftiDataArray
-intent(a)    # "NIFTI_INTENT_POINTSET" in my example case
-metadata(a)  # access various metadata key/value pairs about the array
-size(a)      # (59292, 3) in my example case
-data(a)      # get the raw Array{T, N}
+a = g[1]         # returns a GiftiDataArray
+a[1:5, :]        # index into the array
+intent(a)        # "NIFTI_INTENT_POINTSET" in my example case
+metadata(a)      # access various metadata key/value pairs about the array
+size(a)          # (59292, 3) in my example case
+data(a)          # get the raw Array{T, N}
 ```
 
 Get a vector of all arrays `a` in `g` having `intent(a) == "NIFTI_INTENT_POINTSET"`:
