@@ -13,6 +13,7 @@ filelist = readdir(data_dir)
 		@test g isa GiftiStruct
 		@test metadata(g) isa Dict
 		@test data(g) isa Vector{GiftiDataArray}
+		@test data(g) == data(g, r".*")
 		@test first(g) == g[1]
 		@test last(g) == g[end]
 
@@ -48,7 +49,7 @@ filelist = readdir(data_dir)
 
 		if occursin(r".label.gii$", file)
 			label_table = metadata(g)["label_table"]
-			label_arrays = g["NIFTI_INTENT_LABEL"]
+			label_arrays = data(g, "NIFTI_INTENT_LABEL")
 			dtype = metadata(label_arrays[1]).data_type
 			@test label_table isa Dict{dtype, Tuple{String, Vector{Float32}}}
 			for label_array in label_arrays

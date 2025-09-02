@@ -16,16 +16,18 @@ function load(filename::String)::GiftiStruct
 	version = pop!(metadata, "version", "1.0") # todo: ?
 	
 	arrays = GiftiDataArray[]
-	lookup = Dict{String, Vector{Int}}()
+	intent_lookup = Dict{String, Vector{Int}}()
 	elements = get_elements_by_tagname(root_elem, "DataArray")
 	for (i, element) in enumerate(elements)
 		array = parse_data_array(element)
 		push!(arrays, array)
-		array_counter = get!(lookup, intent(array), Int[])
+		array_counter = get!(intent_lookup, intent(array), Int[])
 		push!(array_counter, i)
 	end
 	
 	free(doc)
-	return test = GiftiStruct(arrays, lookup, metadata, version, filename)
+	return test = GiftiStruct(
+		arrays, intent_lookup, metadata, version, filename
+	)
 end
 
