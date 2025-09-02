@@ -1,4 +1,10 @@
 
+struct CoordinateTransform
+	data_space::String
+	transformed_space::String
+	matrix::Matrix{Float64}
+end
+
 struct ArrayMetadata
 	name::Union{Nothing, String}
 	data_type::DataType
@@ -8,7 +14,7 @@ struct ArrayMetadata
 	endian::String
 	external_file::Union{Nothing, String}
 	external_offset::Int
-	coordinate_system_transform::Union{Nothing, Matrix{Float64}}
+	coordinate_transforms::Vector{CoordinateTransform}
 	metadata::Dict{String, String}  # for additional metadata key-value pairs
 end
 

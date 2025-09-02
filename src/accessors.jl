@@ -34,9 +34,11 @@ intents(g::GiftiStruct)= [intent(a) for a in data(g)]
 pointsets(g::GiftiStruct) = data(g, "NIFTI_INTENT_POINTSET")
 triangles(g::GiftiStruct) = data(g, "NIFTI_INTENT_TRIANGLE")
 
-# singular accessors that assume only one matching array:
-pointset(g::GiftiStruct) = only(pointsets(g))
-triangle(g::GiftiStruct) = only(triangles(g))
+transforms(a::GiftiDataArray) = metadata(a).coordinate_transforms
+
+# singular accessors that return only one matching array:
+pointset(g::GiftiStruct) = first(pointsets(g))
+triangle(g::GiftiStruct) = first(triangles(g))
 
 has_pointset(g::GiftiStruct) = haskey(g.intent_lookup, "NIFTI_INTENT_POINTSET")
 has_triangle(g::GiftiStruct) = haskey(g.intent_lookup, "NIFTI_INTENT_TRIANGLE")

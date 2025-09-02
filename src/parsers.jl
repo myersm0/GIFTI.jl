@@ -17,32 +17,30 @@ function parse_dimensions(xml_element::XMLElement)
 	return dims
 end
 
-function parse_coordinate_system_transform(xml_element::XMLElement)
-	transform_elements = get_elements_by_tagname(xml_element, "CoordinateSystemTransformMatrix")
-	isempty(transform_elements) && return nothing
-	
-	transforms = Matrix{Float64}[]
-	for transform_elem in transform_elements
-		# Parse DataSpace and TransformedSpace (for documentation)
-		data_space_elem = get_elements_by_tagname(transform_elem, "DataSpace")
-		transformed_space_elem = get_elements_by_tagname(transform_elem, "TransformedSpace")
-		
-		matrix_data = get_elements_by_tagname(transform_elem, "MatrixData")
-		isempty(matrix_data) && continue
+function parse_coordinate_transforms(xml_element::XMLElement)
+	elements = get_elements_by_tagname(
+		xml_element, "CoordinateSystemTransformMatrix"
+	)
+	transforms = CoordinateTransform[]
+	for element in elements
+		data_space = content(
+			first(
+				get_elements_by_tagname(element, "DataSpace")
+			)
+		)
+		transformed_space = content(
+			first(
+				get_elements_by_tagname(element, "TransformedSpace")
+			)
+		)
+		matrix_data = get_elements_by_tagname(element, "MatrixData")
 		data_str = content(first(matrix_data))
 		values = parse.(Float64, split(data_str))
-		length(values) == 16 || throw(GiftiFormatError("Transform matrix must have 16 elements"))
-		# todo: reconsider this transpose
-		matrix = reshape(values, 4, 4)'  # Transpose for row-major to column-major
-		push!(transforms, matrix)
+		matrix = reshape(values, 4, 4)'
+		transform = CoordinateTransform(data_space, transformed_space, matrix)
+		push!(transforms, transform)
 	end
-	
-	# todo: saner handling of conditions
-	# Return the first transform if more than one exists
-	if length(transforms) > 1
-		@warn "Multiple coordinate transforms found, using only the first"
-	end
-	return isempty(transforms) ? nothing : transforms[1]
+	return transforms
 end
 
 function parse_metadata_dict(xml_element::XMLElement)
@@ -137,12 +135,12 @@ function parse_data_array(xml_element::XMLElement)
 	external_offset = has_attribute(xml_element, "ExternalFileOffset") ?
 		parse(Int, attribute(xml_element, "ExternalFileOffset")) : 0
 	
-	transform = parse_coordinate_system_transform(xml_element)
+	transforms = parse_coordinate_transforms(xml_element)
 	metadata_dict = parse_metadata_dict(xml_element)
 	metadata = ArrayMetadata(
 		name, data_type, intent, dimensions,
 		encoding, endian, external_file, external_offset,
-		transform, metadata_dict
+		transforms, metadata_dict
 	)
 	data = parse_array_data(xml_element, metadata)
 	return GiftiDataArray(data, metadata)

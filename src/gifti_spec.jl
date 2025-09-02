@@ -110,10 +110,7 @@ const endian_types = ["BigEndian", "LittleEndian"]
 const indexing_order = ["RowMajorOrder", "ColumnMajorOrder"]
 
 const coordinate_systems = [
-	"Talairach",
-	"MNI",
-	"AFNI",
-	"FreeSurfer",
+	"NIFTI_XFORM_UNKNOWN",
 	"NIFTI_XFORM_SCANNER_ANAT",
 	"NIFTI_XFORM_ALIGNED_ANAT",
 	"NIFTI_XFORM_TALAIRACH",
