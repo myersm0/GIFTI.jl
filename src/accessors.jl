@@ -2,49 +2,49 @@
 """
     metadata(g::GiftiStruct)
 
-Return the global metadata dictionary for the GIFTI file.
+Get the global metadata dictionary for the GIFTI file.
 """
 metadata(g::GiftiStruct) = g.metadata
 
 """
     metadata(a::GiftiDataArray)
 
-Return the ArrayMetadata struct containing all metadata for this data array.
+Get the ArrayMetadata struct containing all metadata for this data array.
 """
 metadata(a::GiftiDataArray) = a.metadata
 
 """
     metadata(m::ArrayMetadata)
 
-Return the optional metadata dictionary (name/value pairs) from the ArrayMetadata.
+Get the optional metadata dictionary (name/value pairs) from the ArrayMetadata.
 """
 metadata(m::ArrayMetadata) = m.metadata
 
 """
     data(g::GiftiStruct)
 
-Return all data arrays contained in the GiftiStruct as a vector.
+Get all data arrays contained in the GiftiStruct as a vector.
 """
 data(g::GiftiStruct) = g.data
 
 """
     data(g::GiftiStruct, intent::AbstractString)
 
-Return a vector of data arrays matching the specified intent string.
+Get a vector of data arrays matching the specified intent string.
 """
 data(g::GiftiStruct, intent::AbstractString) = data(g)[get(g.intent_lookup, intent, Int[])]
 
 """
     data(g::GiftiStruct, regex::Regex)
 
-Return a vector of data arrays with intents matching the regular expression.
+Get a vector of data arrays with intents matching the regular expression.
 """
 data(g::GiftiStruct, regex::Regex) = filter(d -> occursin(regex, intent(d)), data(g))
 
 """
     data(a::GiftiDataArray)
 
-Return the raw numeric array contained in the GiftiDataArray.
+Get the raw numeric array contained in the GiftiDataArray.
 """
 data(a::GiftiDataArray) = a.data
 
@@ -77,63 +77,63 @@ Base.axes(a::GiftiDataArray) = axes(data(a))
 """
     intent(a::GiftiDataArray)
 
-Return the intent string describing the type of data in this array.
+Get the intent string describing the type of data in this array.
 """
 intent(a::GiftiDataArray) = metadata(a).intent
 
 """
     intents(g::GiftiStruct)
 
-Return a vector of intent strings for all data arrays in the GiftiStruct.
+Get a vector of intent strings for all data arrays in `g`.
 """
 intents(g::GiftiStruct)= [intent(a) for a in data(g)]
 
 """
     pointsets(g::GiftiStruct)
 
-Return all data arrays with intent NIFTI_INTENT_POINTSET.
+Get all data arrays from `g` with intent NIFTI_INTENT_POINTSET.
 """
 pointsets(g::GiftiStruct) = data(g, "NIFTI_INTENT_POINTSET")
 
 """
     triangles(g::GiftiStruct)
 
-Return all data arrays with intent NIFTI_INTENT_TRIANGLE.
+Get all data arrays from `g` with intent NIFTI_INTENT_TRIANGLE.
 """
 triangles(g::GiftiStruct) = data(g, "NIFTI_INTENT_TRIANGLE")
 
 """
     transforms(a::GiftiDataArray)
 
-Return the vector of coordinate transforms for this data array.
+Get the vector of coordinate transforms for this data array.
 """
 transforms(a::GiftiDataArray) = metadata(a).coordinate_transforms
 
 """
     pointset(g::GiftiStruct)
 
-Return the first data array with intent NIFTI_INTENT_POINTSET.
+Get the first data array in `g` with intent NIFTI_INTENT_POINTSET, or error if none exist.
 """
 pointset(g::GiftiStruct) = first(pointsets(g))
 
 """
     triangle(g::GiftiStruct)
 
-Return the first data array with intent NIFTI_INTENT_TRIANGLE.
+Get the first data array in `g` with intent NIFTI_INTENT_TRIANGLE, or error if none exist.
 """
 triangle(g::GiftiStruct) = first(triangles(g))
 
 """
     has_pointset(g::GiftiStruct)
 
-Check if the GiftiStruct contains any NIFTI_INTENT_POINTSET arrays.
+Check if `g` contains any NIFTI_INTENT_POINTSET arrays.
 """
 has_pointset(g::GiftiStruct) = haskey(g.intent_lookup, "NIFTI_INTENT_POINTSET")
 
 """
     has_triangle(g::GiftiStruct)
 
-Check if the GiftiStruct contains any NIFTI_INTENT_TRIANGLE arrays.
+Check if `g` contains any NIFTI_INTENT_TRIANGLE arrays.
 """
 has_triangle(g::GiftiStruct) = haskey(g.intent_lookup, "NIFTI_INTENT_TRIANGLE")
 
@@ -154,7 +154,7 @@ has_triangles(g::GiftiStruct) = has_triangle(g)
 """
     has_time_series(g::GiftiStruct)
 
-Check if the GiftiStruct contains any NIFTI_INTENT_TIME_SERIES arrays.
+Check if `g` contains any NIFTI_INTENT_TIME_SERIES arrays.
 """
 has_time_series(g::GiftiStruct) = haskey(g.intent_lookup, "NIFTI_INTENT_TIME_SERIES")
 
