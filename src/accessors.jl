@@ -48,6 +48,13 @@ Get the raw numeric array contained in the GiftiDataArray.
 """
 data(a::GiftiDataArray) = a.data
 
+"""
+    data(t::CoordinateTransform)
+
+Get the raw numeric array contained in the CoordinateTransform.
+"""
+data(t::CoordinateTransform) = t.matrix
+
 Base.length(g::GiftiStruct) = length(data(g))
 
 Base.getindex(g::GiftiStruct, i::Integer) = data(g)[i]
