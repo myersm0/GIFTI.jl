@@ -25,7 +25,8 @@ const test_metadata = let elem = first_data_elem
 	endian = attribute(elem, "Endian")
 	GIFTI.ArrayMetadata(
 		nothing, data_type, intent, dimensions,
-		encoding, endian, nothing, 0, nothing, Dict{String,String}()
+		encoding, endian, nothing, 0, GIFTI.CoordinateTransform[], 
+		Dict{String,String}()
 	)
 end
 
@@ -41,7 +42,7 @@ SUITE["parsing"]["components"]["data_array"] = @benchmarkable GIFTI.parse_data_a
 SUITE["parsing"]["components"]["array_data"] = @benchmarkable GIFTI.parse_array_data($first_data_elem, $test_metadata)
 
 SUITE["parsing"]["metadata"]["dimensions"] = @benchmarkable GIFTI.parse_dimensions($first_data_elem)
-SUITE["parsing"]["metadata"]["coordinate_transform"] = @benchmarkable GIFTI.parse_coordinate_system_transform($first_data_elem)
+SUITE["parsing"]["metadata"]["coordinate_transform"] = @benchmarkable GIFTI.parse_coordinate_transforms($first_data_elem)
 SUITE["parsing"]["metadata"]["metadata_dict"] = @benchmarkable GIFTI.parse_metadata_dict($first_data_elem)
 SUITE["parsing"]["metadata"]["data_type"] = @benchmarkable GIFTI.parse_data_type(attribute($first_data_elem, "DataType"))
 
