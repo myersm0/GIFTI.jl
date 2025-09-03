@@ -107,7 +107,9 @@ triangles(g::GiftiStruct) = data(g, "NIFTI_INTENT_TRIANGLE")
 
 Get the vector of coordinate transforms for this data array.
 """
-transforms(a::GiftiDataArray) = metadata(a).coordinate_transforms
+transforms(a::GiftiDataArray) = transforms(metadata(a))
+
+transforms(m::ArrayMetadata) = m.coordinate_transforms
 
 """
     pointset(g::GiftiStruct)
