@@ -59,3 +59,40 @@ function Base.show(io::IO, ::MIME"text/plain", m::ArrayMetadata)
 	end
 end
 
+function Base.show(io::IO, ::MIME"text/plain", t::CoordinateTransform)
+	println(io, "CoordinateTransform")
+	println(io, "  from: ", t.data_space)
+	println(io, "  to:   ", t.transformed_space)
+	print(io, "  matrix: ", size(t.matrix), " Matrix{Float64}")
+end
+
+function Base.show(io::IO, ::MIME"text/plain", v::Vector{CoordinateTransform})
+	n = length(v)
+	if n == 0
+		print(io, "CoordinateTransform[]")
+	elseif n == 1
+		println(io, "1-element Vector{CoordinateTransform}:")
+		println(io, "  ", v[1].data_space, " → ", v[1].transformed_space)
+	else
+		println(io, n, "-element Vector{CoordinateTransform}:")
+		for (i, t) in enumerate(v)
+			println(io, "  [", i, "] ", t.data_space, " → ", t.transformed_space)
+		end
+	end
+end
+
+function Base.show(io::IO, ::MIME"text/plain", v::Vector{GiftiDataArray})
+	n = length(v)
+	if n == 0
+		print(io, "GiftiDataArray[]")
+	elseif n == 1
+		arr = v[1]
+		println(io, "1-element Vector{GiftiDataArray}:")
+		println(io, "  ", intent(arr), ": ", size(data(arr)), " ", eltype(data(arr)))
+	else
+		println(io, n, "-element Vector{GiftiDataArray}:")
+		for (i, arr) in enumerate(v)
+			println(io, "  [", i, "] ", intent(arr), ": ", size(data(arr)), " ", eltype(data(arr)))
+		end
+	end
+end
