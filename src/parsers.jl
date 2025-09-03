@@ -141,12 +141,7 @@ function parse_data_array(xml_element::XMLElement)
 end
 
 function parse_global_metadata(xml_root::XMLElement)
-	metadata = Dict{String, Any}()
-	temp = parse_metadata_dict(xml_root)
-	for (k, v) in temp
-		metadata[k] = v
-	end
-	
+	metadata = Dict{String, Any}(parse_metadata_dict(xml_root))
 	label_tables = get_elements_by_tagname(xml_root, "LabelTable")
 	if !isempty(label_tables)
 		metadata["label_table"] = parse_label_table(first(label_tables))
