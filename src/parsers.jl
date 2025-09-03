@@ -14,7 +14,7 @@ function parse_dimensions(xml_element::XMLElement)
 			throw(GiftiFormatError("Missing dimension attribute: $dim_attr"))
 		push!(dims, parse(Int, attribute(xml_element, dim_attr)))
 	end
-	return dims
+	return tuple(dims...)
 end
 
 function parse_coordinate_transforms(xml_element::XMLElement)
@@ -105,10 +105,7 @@ function parse_array_data(xml_element::XMLElement, metadata::ArrayMetadata)
 	if attribute(xml_element, "ArrayIndexingOrder") == "RowMajorOrder"
 		if attribute(xml_element, "ArrayIndexingOrder") == "RowMajorOrder"
 			perm = reverse(1:length(metadata.dimensions))
-			array = permutedims(
-				reshape(values, Tuple(reverse(metadata.dimensions))),
-				perm
-			)
+			array = permutedims(reshape(values, reverse(metadata.dimensions)), perm)
 		end
 	else
 		array = reshape(values, metadata.dimensions...)

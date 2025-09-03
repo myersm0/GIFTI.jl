@@ -23,7 +23,7 @@ filelist = readdir(data_dir)
 			@test a[1:5, 1] == data(a)[1:5, 1]
 			@test metadata(a) isa GIFTI.ArrayMetadata
 			@test data(a) isa AbstractArray
-			@test size(a) == size(data(a)) == Tuple(metadata(a).dimensions)
+			@test size(a) == size(data(a)) == metadata(a).dimensions
 			@test intent(a) == intents(g)[i]
 		end
 

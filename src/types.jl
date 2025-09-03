@@ -9,7 +9,7 @@ struct ArrayMetadata
 	name::Union{Nothing, String}
 	data_type::DataType
 	intent::String
-	dimensions::Vector{Int} # todo: why not just determine from array?
+	dimensions::Tuple{Vararg{Int}}
 	encoding::String
 	endian::String
 	external_file::Union{Nothing, String}
@@ -27,9 +27,9 @@ struct GiftiDataArray{T, N}
 				"array is $(T) but metadata specifies $(metadata.data_type)"
 			)
 		)
-		size(data) == Tuple(metadata.dimensions) || throw(
+		size(data) == metadata.dimensions || throw(
 			GiftiFormatError(
-				"array is $(size(data)) but metadata specifies $(Tuple(metadata.dimensions))"
+				"array is $(size(data)) but metadata specifies $(metadata.dimensions)"
 			)
 		)
 		return new{T, N}(data, metadata)
