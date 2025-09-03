@@ -10,7 +10,7 @@ struct ArrayMetadata
 	data_type::DataType
 	intent::String
 	dimensions::Tuple{Vararg{Int}}
-	encoding::String
+	encoding::EncodingType
 	endian::String
 	external_file::Union{Nothing, String}
 	external_offset::Int

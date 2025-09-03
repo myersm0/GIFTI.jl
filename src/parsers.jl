@@ -5,6 +5,12 @@ function parse_data_type(type_str::String)
 	return nifti_to_julia_type[type_str]
 end
 
+function parse_encoding_type(type_str::String)
+	haskey(encoding_types, type_str) || 
+		throw(GiftiFormatError("Unknown data type: $type_str"))
+	return encoding_types[type_str]
+end
+
 function parse_dimensions(xml_element::XMLElement)
 	n_dims = parse(Int, attribute(xml_element, "Dimensionality"))
 	dims = Int[]
@@ -59,17 +65,20 @@ function parse_metadata_dict(xml_element::XMLElement)
 	return metadata
 end
 
-function decode_data(data_string::String, encoding::String)
-	if encoding == "ASCII"
-		return data_string
-	elseif encoding == "Base64Binary"
-		return base64decode(data_string)
-	elseif encoding == "GZipBase64Binary"
-		gzipped = base64decode(data_string)
-		return transcode(GzipDecompressor, gzipped)
-	else
-		throw(GiftiFormatError("Unsupported encoding: $encoding"))
-	end
+function decode_data(::ASCII, str::String, dtype::DataType)
+	return parse.(dtype, split(str))
+end
+
+function decode_data(::Base64Binary, str::String, dtype::DataType)
+	return reinterpret(dtype, base64decode(str))
+end
+
+function decode_data(::GZipBase64Binary, str::String, dtype::DataType)
+	return reinterpret(dtype, transcode(GzipDecompressor, base64decode(str)))
+end
+
+function decode_data(e::EncodingType, str::String)
+	throw(GiftiFormatError("Unsupported encoding $e"))
 end
 
 function parse_array_data(xml_element::XMLElement, metadata::ArrayMetadata)
@@ -79,24 +88,8 @@ function parse_array_data(xml_element::XMLElement, metadata::ArrayMetadata)
 	data_elem = first(data_elements)
 	raw_data = content(data_elem)
 	
-	if metadata.encoding == "ExternalFileBinary"
-		if isnothing(metadata.external_file)
-			throw(GiftiFormatError("External file reference missing"))
-		end
-		throw(GiftiFormatError("External file reading not yet implemented"))
-	end
-	
-	if metadata.encoding == "ASCII"
-		values = parse.(metadata.data_type, split(raw_data))
-	else
-		bytes = decode_data(raw_data, metadata.encoding)
-		values = reinterpret(metadata.data_type, bytes)
-		if metadata.endian == "BigEndian"
-			values = ntoh.(values)
-		else
-			values = ltoh.(values)
-		end
-	end
+	values = decode_data(metadata.encoding, raw_data, metadata.data_type)
+	# todo: add back in endian-handling
 	
 	total_elements = prod(metadata.dimensions)
 	length(values) == total_elements || 
@@ -118,7 +111,7 @@ function parse_data_array(xml_element::XMLElement)
 	intent = attribute(xml_element, "Intent")
 	data_type = parse_data_type(attribute(xml_element, "DataType"))
 	dimensions = parse_dimensions(xml_element)
-	encoding = attribute(xml_element, "Encoding")
+	encoding = parse_encoding_type(attribute(xml_element, "Encoding"))
 	endian = attribute(xml_element, "Endian")
 	
 	# optional attributes

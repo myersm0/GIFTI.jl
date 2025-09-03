@@ -98,12 +98,18 @@ const nifti_to_julia_type = Dict(
 	"NIFTI_TYPE_FLOAT64" => Float64
 )
 
-const encoding_types = [
-	"ASCII",
-	"Base64Binary",
-	"GZipBase64Binary", 
-	"ExternalFileBinary"
-]
+abstract type EncodingType end
+struct ASCII <: EncodingType end
+struct Base64Binary <: EncodingType end
+struct GZipBase64Binary <: EncodingType end
+struct ExternalFileBinary <: EncodingType end
+
+const encoding_types = Dict(
+	"ASCII" => ASCII(),
+	"Base64Binary" => Base64Binary(),
+	"GZipBase64Binary" => GZipBase64Binary(),
+	"ExternalFileBinary" => ExternalFileBinary(),
+)
 
 const endian_types = ["BigEndian", "LittleEndian"]
 
