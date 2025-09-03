@@ -101,17 +101,14 @@ function parse_array_data(xml_element::XMLElement, metadata::ArrayMetadata)
 	total_elements = prod(metadata.dimensions)
 	length(values) == total_elements || 
 		throw(GiftiFormatError("Data size mismatch: expected $total_elements, got $(length(values))"))
-	
+
 	if attribute(xml_element, "ArrayIndexingOrder") == "RowMajorOrder"
-		# todo: reconsider whether we want to do this conversion
-		# Convert from row-major to column-major
-		array = reshape(values, tuple(reverse(metadata.dimensions)...))
-		# todo: make this more general
-		n_dims = length(metadata.dimensions)
-		if n_dims == 2
-			array = permutedims(array, (2, 1))
-		elseif n_dims == 3
-			array = permutedims(array, (3, 2, 1))
+		if attribute(xml_element, "ArrayIndexingOrder") == "RowMajorOrder"
+			perm = reverse(1:length(metadata.dimensions))
+			array = permutedims(
+				reshape(values, Tuple(reverse(metadata.dimensions))),
+				perm
+			)
 		end
 	else
 		array = reshape(values, metadata.dimensions...)
