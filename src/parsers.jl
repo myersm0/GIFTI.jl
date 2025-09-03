@@ -142,13 +142,8 @@ end
 
 function parse_global_metadata(xml_root::XMLElement)
 	metadata = Dict{String, Any}()
-	metadata["version"] = has_attribute(xml_root, "Version") ?
-		attribute(xml_root, "Version") : "1.0"
-	metadata["num_data_arrays"] = has_attribute(xml_root, "NumberOfDataArrays") ?
-		parse(Int, attribute(xml_root, "NumberOfDataArrays")) : 0
-	
-	meta_dict = parse_metadata_dict(xml_root)
-	for (k, v) in meta_dict
+	temp = parse_metadata_dict(xml_root)
+	for (k, v) in temp
 		metadata[k] = v
 	end
 	
@@ -156,8 +151,20 @@ function parse_global_metadata(xml_root::XMLElement)
 	if !isempty(label_tables)
 		metadata["label_table"] = parse_label_table(first(label_tables))
 	end
-	
 	return metadata
+end
+
+function parse_gifti_attributes(xml_root::XMLElement)
+	version_str = attribute(xml_root, "Version")
+	if isnothing(version_str)
+		 throw(GiftiFormatError("Missing required Version attribute"))
+	end
+	version = VersionNumber(version_str)
+	version == v"1.0" || @warn "GIFTI version $version may not be fully supported"
+	# NumberOfDataArrays is optional for validation
+	num_arrays_attr = attribute(xml_root, "NumberOfDataArrays")
+	expected_arrays = isnothing(num_arrays_attr) ? nothing : parse(Int, num_arrays_attr)
+	return version, expected_arrays
 end
 
 function parse_label_table(xml_element::XMLElement)

@@ -20,7 +20,7 @@ function load(filename::AbstractString)
 		)
 	
 	metadata = parse_global_metadata(root_elem)
-	version = pop!(metadata, "version", "1.0") # todo: ?
+	version, num_arrays = parse_gifti_attributes(root_elem)
 	
 	arrays = GiftiDataArray[]
 	intent_lookup = Dict{String, Vector{Int}}()

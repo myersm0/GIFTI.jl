@@ -40,7 +40,7 @@ struct GiftiStruct
 	data::Vector{GiftiDataArray}
 	intent_lookup::Dict{String, Vector{Int}}
 	metadata::Dict{String, Any}
-	version::String
+	version::VersionNumber
 	filename::Union{Nothing, String}
 end
 
