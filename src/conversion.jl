@@ -2,8 +2,8 @@
 function GeometryBasics.Mesh(g::GiftiStruct)
 	pointset_arrays = pointsets(g)
 	triangle_arrays = triangles(g)
-	length(pointset_arrays) == 0 && error("Could not find any arrays with intent NIFTI_INTENT_POINTSET")
-	length(triangle_arrays) == 0 && error("Could not find any arrays with intent NIFTI_INTENT_TRIANGLE")
+	length(pointset_arrays)  > 0 || error("Could not find any arrays with intent NIFTI_INTENT_POINTSET")
+	length(triangle_arrays)  > 0 || error("Could not find any arrays with intent NIFTI_INTENT_TRIANGLE")
 	length(pointset_arrays) == 1 || @warn "Found multiple pointset arrays, using only the first."
 	length(triangle_arrays) == 1 || @warn "Found multiple triangle arrays, using only the first."
 
