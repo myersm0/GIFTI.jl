@@ -56,6 +56,13 @@ if has_pointset(g) && has_triangle(g)
 	triangle_faces = faces(mesh)
 end
 
+# pointset arrays can contain at least one CoordinateTransform matrix
+# that describes how to get from one space to another, 
+# for example from NIFTI_XFORM_TALAIRACH to NIFTI_XFORM_MNI_152
+p = pointset(g)
+transforms(g)  # Vector{CoordinateTransform}
+
+
 # some gifti files may have label data describing colors for display:
 filename = joinpath(data_dir, "MSC01.L.BA.32k_fs_LR.label.gii")
 g = GIFTI.load(filename)
