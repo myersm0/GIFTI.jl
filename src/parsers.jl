@@ -76,42 +76,31 @@ function parse_array_data(xml_element::XMLElement, metadata::ArrayMetadata)
 	data_elements = get_elements_by_tagname(xml_element, "Data")
 	isempty(data_elements) && throw(GiftiFormatError("No Data element found"))
 	
-	data_elem = first(data_elements)
-	raw_data = content(data_elem)
+	raw_data = content(only(data_elements))
 	
-	if metadata.encoding == "ExternalFileBinary"
-		if isnothing(metadata.external_file)
-			throw(GiftiFormatError("External file reference missing"))
-		end
-		throw(GiftiFormatError("External file reading not yet implemented"))
-	end
-	
-	if metadata.encoding == "ASCII"
-		values = parse.(metadata.data_type, split(raw_data))
+	values = if metadata.encoding == "ASCII"
+		parse.(metadata.data_type, split(raw_data))
 	else
 		bytes = decode_data(raw_data, metadata.encoding)
-		values = reinterpret(metadata.data_type, bytes)
+		# convert bytes to values with proper endianness
+		raw_values = reinterpret(metadata.data_type, bytes)
 		if metadata.endian == "BigEndian"
-			values = ntoh.(values)
+			collect(ntoh.(raw_values))  # collect() ensures Array{T,1}
 		else
-			values = ltoh.(values)
+			collect(ltoh.(raw_values))   # collect() ensures Array{T,1}
 		end
 	end
 	
 	total_elements = prod(metadata.dimensions)
 	length(values) == total_elements || 
-		throw(GiftiFormatError("Data size mismatch: expected $total_elements, got $(length(values))"))
-
-	if attribute(xml_element, "ArrayIndexingOrder") == "RowMajorOrder"
-		if attribute(xml_element, "ArrayIndexingOrder") == "RowMajorOrder"
-			perm = reverse(1:length(metadata.dimensions))
-			array = permutedims(reshape(values, reverse(metadata.dimensions)), perm)
-		end
-	else
-		array = reshape(values, metadata.dimensions...)
-	end
+		throw(GiftiFormatError("Expected $total_elements, got $(length(values))"))
 	
-	return array
+	if attribute(xml_element, "ArrayIndexingOrder") == "RowMajorOrder"
+		perm = reverse(1:length(metadata.dimensions))
+		return permutedims(reshape(values, reverse(metadata.dimensions)), perm)
+	else
+		return reshape(values, metadata.dimensions)
+	end
 end
 
 function parse_data_array(xml_element::XMLElement)
